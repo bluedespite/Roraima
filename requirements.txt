@@ -1,1 +1,4 @@
 pymongo
+pyserial
+pymodbus
+bcrypt
