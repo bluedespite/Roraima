@@ -184,7 +184,7 @@ f.close()
 db=client.MAIN_SENSOR
 init_db(db)
 
-if True:
+while True:
     Arduino_Comm(db)
     if db.CONF.count_documents({})>0:
         CONFIG=Read_Conf(db)
