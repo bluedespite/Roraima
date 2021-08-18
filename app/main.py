@@ -77,19 +77,22 @@ def init_logger():
 
 def init_arduino():   
     arduino_ports=[]
-    for p in serial.tools.list_ports.comports():
-        if 'Arduino' in p.manufacturer:
-            arduino_ports = p.device
-            logging.info("Info Puerto Serie Arduino:"+str(p.device))
-            return arduino_ports,True
-    return arduino_ports,False
+    try:
+        for p in serial.tools.list_ports.comports():
+            if 'Arduino' in p.manufacturer:
+                arduino_ports = p.device
+                logging.info("Info Puerto Serie Arduino:"+str(p.device))
+                return arduino_ports,True
+        return arduino_ports,False
+    except:
+        return arduino_ports,False
 
 def Arduino_Comm(db):
     ARDUINO={}
     arduino_port,OK = init_arduino()
-    arduino = serial.Serial(arduino_port,9600, timeout=50)
-    time.sleep(10)
     if OK:
+        arduino = serial.Serial(arduino_port,9600, timeout=50)
+        time.sleep(10)
         comando = 'GO!'+'\n'
         a=arduino.write(comando.encode())
         lectura = arduino.readline() 
