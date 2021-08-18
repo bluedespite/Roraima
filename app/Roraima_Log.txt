@@ -1,0 +1,1 @@
+2021-08-17 22:19:09,073 - MainThread INFO main 83 Info Puerto Serie Arduino:/dev/ttyACM0
