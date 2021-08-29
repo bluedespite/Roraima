@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<!--cuerpo del documento-->
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <button type="button" class="btn btn-primary" onclick="search_user()" >Search by email</button>
+        <button type="button" class="btn btn-primary" onclick="save_user()" >Save</button>
+        </div>
+        <h5>Administracion de usuarios</h5>
+            <p>Correo Electronico</p>
+            <input type="email" name="email" id="email" class="form-control col-5" placeholder="Email"  ></input>
+            <p>Contraseña</p>
+            <input type="password" name="password" id="password" class="form-control col-5" placeholder="Password" ></input>
+            <p>Nueva Contraseña</p>
+            <input type="password" name="npassword" id="npassword" class="form-control col-5" placeholder="New Password" ></input>
+            <p>Nombres:</p>
+            <input type="text" name="nombre" class="form-control col-5" placeholder="Nombres" id="nombre" ></input>
+            <p>Apellidos:</p>
+            <input type="text" name="apellido" class="form-control col-5" placeholder="Apellidos" id="apellido" ></input>
+            <p>Cargo:</p>
+            <input type="text" name="cargo" class="form-control col-5" placeholder="Cargo" id="cargo" ></input>
+            <p>Area de la Empresa:</p>
+            <input type="text" name="area" class="form-control col-5" placeholder="Area" id= "area" ></input>
+            <p>Empresa:</p>
+            <input type="text" name="empresa" class="form-control col-5" placeholder="Empresa" id ="empresa" ></input>
+            <p>Rol de Usuario:</p>
+            <select class="form-select col-5" name="role" id="role"  >
+                <option selected>Choose...</option>
+                <option value="Administrador">Administrador</option>
+                <option value="Supervisor">Supervisor</option>
+                <option value="Usuario">Usuario</option>
+            </select>
+    </main>
+
+<!--fin del cuerpo del documento--> 
+
+{% endblock %}
+{% block scriptt %}
+<script >
+
+
+function save_user(){
+    var fd = new FormData();
+    fd.append( 'nombre', document.getElementById("nombre").value);
+    fd.append( 'apellido', document.getElementById("apellido").value);
+    fd.append( 'cargo', document.getElementById("cargo").value);
+    fd.append( 'area', document.getElementById("area").value);
+    fd.append( 'rol', document.getElementById("role").value);
+    fd.append( 'empresa', document.getElementById("empresa").value);
+    fd.append( 'email', document.getElementById("email").value);
+    fd.append( 'password', document.getElementById("password").value);
+    fd.append( 'npassword', document.getElementById("npassword").value);
+    $.ajax({
+url: "{{ url_for('saveuser') }}",
+data:fd,
+processData: false,
+contentType: false,
+type:"POST",
+dataType: 'json',
+success: function(data) {
+    console.log(data);
+}})};
+
+function search_user(){
+    var fd = new FormData();
+    fd.append( 'email', document.getElementById("email").value);
+    $.ajax({
+url: "{{ url_for('getuser') }}",
+data:fd,
+processData: false,
+contentType: false,
+type:"POST",
+dataType: 'json',
+success: function(data) {
+    document.getElementById("nombre").value=data.data["nombre"];
+    document.getElementById("apellido").value=data.data["apellido"];
+    document.getElementById("cargo").value=data.data["cargo"];
+    document.getElementById("area").value=data.data["area"];
+    document.getElementById("role").value=data.data["rol"];
+    document.getElementById("empresa").value=data.data["empresa"];
+    document.getElementById("email").value=data.data["email"];
+    document.getElementById("password").value="";
+    document.getElementById("npassword").value="";
+    console.log(data);
+}})};
+
+
+</script>
+{% endblock %}

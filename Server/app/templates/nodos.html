@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<!--cuerpo del documento-->
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <button type="button" class="btn btn-primary" onclick="search_nodo()" >Search Nodo</button>
+        <button type="button" class="btn btn-primary" onclick="save_nodo()" >Save Nodo</button>
+
+    </div>
+        <h4>Administrador de Nodos</h4>
+        <p>Nombre del Nodo:</p>
+            <input type="text" class="form-control mb-2" placeholder="ID Nodo" id="NOMBRE" required ></input>
+            <p>Direccion del Nodo:</p>
+            <input type="text" class="form-control mb-2" placeholder="DIRECCION" id="DIRECCION" required ></input>
+         <p>Habilitacion:</p>
+            <select class="form-select mb-2" name="ENABLE" id="ENABLE"  >
+                <option selected>Choose...</option>
+                <option value="Habilitado">Habilitado</option>
+                <option value="Deshabilitado">Deshabilitado</option>
+            </select>          
+        
+        
+
+    
+    </main>
+
+<!--fin del cuerpo del documento--> 
+
+{% endblock %}
+{% block scriptt %}
+<script>
+
+function save_nodo(){
+    var fd = new FormData();
+    fd.append( 'NOMBRE', document.getElementById("NOMBRE").value);
+    fd.append( 'DIRECCION', document.getElementById("DIRECCION").value);
+    fd.append( 'ENABLE', document.getElementById("ENABLE").value);
+    $.ajax({
+url: "{{ url_for('savenodo') }}",
+data:fd,
+processData: false,
+contentType: false,
+type:"POST",
+dataType: 'json',
+success: function(data) {
+    console.log(data);
+}})};
+
+function search_nodo(){
+    var fd = new FormData();
+    fd.append( 'NOMBRE', document.getElementById("NOMBRE").value);
+    $.ajax({
+url: "{{ url_for('getnodo') }}",
+data:fd,
+processData: false,
+contentType: false,
+type:"POST",
+dataType: 'json',
+success: function(data) {
+    document.getElementById("NOMBRE").value=data.data["NOMBRE"];
+    document.getElementById("DIRECCION").value=data.data["DIRECCION"];
+    document.getElementById("ENABLE").value=data.data["ENABLE"];
+    console.log(data);
+
+}})};
+
+
+</script>
+{% endblock %}

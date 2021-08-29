@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<!--cuerpo del documento-->
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <button type="button" class="btn btn-primary" onclick="search_conf()" >Search by TAG</button>
+        <button type="button" class="btn btn-primary" onclick="save_conf()" >Save TAG</button>
+    </div>        
+        <h4>Administrador de Configuracion Canales</h4>
+            <p>Tag del Sensor:</p>
+            <input type="text" class="form-control mb-2" placeholder="Tag del Sensor" id="TAG_SENSOR" required ></input>
+            <p>Descripcion:</p>
+            <input type="text" class="form-control mb-2" placeholder="DESCRIPCION" id="DESCRIPCION" required ></input>
+            <p>Unidad de Medida:</p>
+            <input type="text" class="form-control mb-2" placeholder="Unidad de Medida" id="UM" required ></input>
+            <p>Rango Minimo:</p>
+            <input type="text" class="form-control mb-2" placeholder="Rango Minimo" id="RANGO_MIN" required ></input>
+            <p>Rango Maximo:</p>
+            <input type="text" class="form-control mb-2" placeholder="Rango Maximo" id="RANGO_MAX" required ></input>
+            <p>ID de la Estacion:</p>
+            <input type="text" class="form-control mb-2" placeholder="ID Estacion" id="ID_ESTACION" required ></input>
+            <p>Nombre de la Estacion:</p>
+            <input type="text" class="form-control mb-2" placeholder="Nombre de la Estacion" id="ESTACION" required ></input>
+            <p>ID de Tanque:</p>
+            <input type="text" class="form-control mb-2" placeholder="ID Tanque" id="ID_TANQUE" required ></input>
+            <p>Nombre del Tanque:</p>
+            <input type="text" class="form-control mb-2" placeholder="Nombre Tanque" id="TANQUE" required ></input>
+            <p>Nombre del Producto:</p>
+            <input type="text" class="form-control mb-2" placeholder="Nombre Producto" id="PRODUCTO" required ></input>
+            <p>Densidad del Producto:</p>
+            <input type="text" class="form-control mb-2" placeholder="Densidad Producto" id="DENSIDAD" required ></input>
+            <p>Tipo:</p>
+            <select class="form-select mb-2" name="Tipo" id="TIPO"  >
+                <option selected>Choose...</option>
+                <option value="ANALOGICO">ANALOGICO (4-20mA/1-5Vdc)</option>
+                <option value="MODBUS_TCP">MODBUS TCP</option>
+                <option value="MODBUS_SERIAL">MODBUS SERIAL (RS232/RS485)</option>
+            </select>
+
+            <p>Direccion:</p>
+            <input type="text" class="form-control mb-2" placeholder="Direccion" id="DIRECCION" required ></input>
+            <p>Mascara:</p>
+            <input type="text" class="form-control mb-2" placeholder="Mascara" id="MASCARA" required ></input>
+            <p>Puerto de Comunicaciones (TCP):</p>
+            <input type="text" class="form-control mb-2" placeholder="Puerto de Comunicacion TCP" id="PUERTO" required ></input>
+            <p>ID de Comunicaciones:</p>
+            <input type="text" class="form-control mb-2" placeholder="Direccion" id="ID_COMM" required ></input>
+            <p>Configuracion de Comunicacion Serial (RS232/RS485):</p>
+            <input type="text" class="form-control mb-2" placeholder="Configuracion Serial" id="SERIAL" required ></input>
+            <p>Tabla de Linealizacion:</p>
+            <input type="text" class="form-control mb-2" placeholder="Tabla de linealizacion" id="LINEAR" required ></input>
+            <p>Habilitacion:</p>
+            <select class="form-select mb-2" name="ENABLE" id="ENABLE"  >
+                <option selected>Choose...</option>
+                <option value="Habilitado">Habilitado</option>
+                <option value="Deshabilitado">Deshabilitado</option>
+            </select>          
+        <button type="button" class="btn btn-primary" onclick="search_conf()" >Search by TAG</button>
+        <button type="button" class="btn btn-primary" onclick="save_conf()" >Save TAG</button>
+
+
+
+    </main>
+    
+<!--fin del cuerpo del documento--> 
+
+{% endblock %}
+
+{% block scriptt %}
+<script>
+
+CONF = {'ID':'', 'ID_ESTACION': '','ESTACION': '', 'ID_TANQUE':'','TANQUE':'', 'PRODUCTO':'', 'DENSIDAD':'', 'TAG_SENSOR':'','DESCRIPCION':'','UM':'', 'RANGO_MIN':'', 'RANGO_MAX':'','TIPO':'','DIRECCION':'','MASCARA':'','PUERTO':'','ID_COMM':'','SERIAL':'','LINEAR':'','ENABLE':'' }
+
+        function save_conf(){
+            var fd = new FormData();
+            fd.append( 'ID_ESTACION', document.getElementById("ID_ESTACION").value);
+            fd.append( 'ESTACION', document.getElementById("ESTACION").value);
+            fd.append( 'ID_TANQUE', document.getElementById("ID_TANQUE").value);
+            fd.append( 'TANQUE', document.getElementById("TANQUE").value);
+            fd.append( 'PRODUCTO', document.getElementById("PRODUCTO").value);
+            fd.append( 'DENSIDAD', document.getElementById("DENSIDAD").value);
+            fd.append( 'TAG_SENSOR', document.getElementById("TAG_SENSOR").value);
+            fd.append( 'DESCRIPCION', document.getElementById("DESCRIPCION").value);
+            fd.append( 'UM', document.getElementById("UM").value);
+            fd.append( 'RANGO_MIN', document.getElementById("RANGO_MIN").value);
+            fd.append( 'RANGO_MAX', document.getElementById("RANGO_MAX").value);
+            fd.append( 'TIPO', document.getElementById("TIPO").value);
+            fd.append( 'DIRECCION', document.getElementById("DIRECCION").value);
+            fd.append( 'MASCARA', document.getElementById("MASCARA").value);
+            fd.append( 'PUERTO', document.getElementById("PUERTO").value);
+            fd.append( 'ID_COMM', document.getElementById("ID_COMM").value);
+            fd.append( 'SERIAL', document.getElementById("SERIAL").value);
+            fd.append( 'LINEAR', document.getElementById("LINEAR").value);
+            fd.append( 'ENABLE', document.getElementById("ENABLE").value);
+            $.ajax({
+        url: "{{ url_for('saveconf') }}",
+        data:fd,
+        processData: false,
+        contentType: false,
+        type:"POST",
+        dataType: 'json',
+        success: function(data) {
+            console.log(data);
+        }})};
+        
+        function search_conf(){
+            var fd = new FormData();
+            fd.append( 'TAG_SENSOR', document.getElementById("TAG_SENSOR").value);
+            $.ajax({
+        url: "{{ url_for('getconf') }}",
+        data:fd,
+        processData: false,
+        contentType: false,
+        type:"POST",
+        dataType: 'json',
+        success: function(data) {
+            document.getElementById("ID_ESTACION").value=data.data["ID_ESTACION"];
+            document.getElementById("ESTACION").value=data.data["ESTACION"];
+            document.getElementById("ID_TANQUE").value=data.data["ID_TANQUE"];
+            document.getElementById("TANQUE").value=data.data["TANQUE"];
+            document.getElementById("PRODUCTO").value=data.data["PRODUCTO"];
+            document.getElementById("DENSIDAD").value=data.data["DENSIDAD"];
+            document.getElementById("TAG_SENSOR").value=data.data["TAG_SENSOR"];
+            document.getElementById("DESCRIPCION").value=data.data["DESCRIPCION"];
+            document.getElementById("UM").value=data.data["UM"];
+            document.getElementById("RANGO_MIN").value=data.data["RANGO_MIN"];
+            document.getElementById("RANGO_MAX").value=data.data["RANGO_MAX"];
+            document.getElementById("TIPO").value=data.data["TIPO"];
+            document.getElementById("DIRECCION").value=data.data["DIRECCION"];
+            document.getElementById("MASCARA").value=data.data["MASCARA"];
+            document.getElementById("PUERTO").value=data.data["PUERTO"];
+            document.getElementById("ID_COMM").value=data.data["ID_COMM"];
+            document.getElementById("SERIAL").value=data.data["SERIAL"];
+            document.getElementById("LINEAR").value=data.data["LINEAR"];
+            document.getElementById("ENABLE").value=data.data["ENABLE"];
+            console.log(data);
+
+        }})};
+</script>
+{% endblock %}
